@@ -1,0 +1,380 @@
+<meta http-equiv="cache-control" content="max-age=0" />
+<meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
+<meta http-equiv='cache-control' content='no-cache'>
+<meta http-equiv='expires' content='0'>
+<meta http-equiv='pragma' content='no-cache'>
+
+<meta content="width=device-width, initial-scale=1.0" name="viewport" />
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<!-- Jquery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://kit.fontawesome.com/3a2331ebdf.js" crossorigin="anonymous"></script>
+
+<!-- Start of opsmagalu Zendesk Widget script -->
+<script id="ze-snippet"
+    src="https://static.zdassets.com/ekr/snippet.js?key=fe00ff5b-ce78-499f-970c-b32caa8ce2b3"> </script>
+<script type="text/javascript">
+    zE(function () {
+        zE.hide();
+    });
+</script>
+<!-- End of opsmagalu Zendesk Widget script -->
+
+<script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
+<df-messenger intent="WELCOME" chat-title="Assistente Labs" agent-id="e06c8cc4-4b47-47e9-88a2-13ddab07bb21"
+    chat-icon="https://storage.googleapis.com/baap-static/public_images/assistente-helpdesk/chatbot-helpdesk-avatar.png"
+    language-code="pt-br" style="margin-botton=500px" wait-open="true"></df-messenger>
+
+<style>
+    df-messenger {
+        --df-messenger-button-titlebar-color: #0086FF;
+        --df-messenger-user-message: #E0EFFD;
+        --df-messenger-font-color: #788089;
+    }
+</style>
+
+<script type="text/javascript">
+    getMonthName = (month) => {
+        switch (month) {
+            case 1:
+                return 'Janeiro';
+            case 2:
+                return 'Fevereiro';
+            case 3:
+                return 'Março';
+            case 4:
+                return 'Abril';
+            case 5:
+                return 'Maio';
+            case 6:
+                return 'Junho';
+            case 7:
+                return 'Julho';
+            case 8:
+                return 'Agosto';
+            case 9:
+                return 'Setembro';
+            case 10:
+                return 'Outubro';
+            case 11:
+                return 'Novembro';
+            case 12:
+                return 'Dezembro';
+            default:
+                return '';
+        }
+    }
+
+    formatDate = (date) => {
+        if (!date) return;
+
+        const formattedDate = new Date(date);
+        const day = formattedDate.getDate();
+        const month = getMonthName(formattedDate.getMonth() + 1);
+
+        return day + ' de ' + month;
+    }
+</script>
+
+
+<script type="text/javascript">
+    $(document).ready((e) => {
+        sessionStorage.name = HelpCenter.user.name
+        sessionStorage.email = HelpCenter.user.email
+    })
+
+    zE(function () {
+        zE.identify({
+            name: sessionStorage.name,
+            email: sessionStorage.email
+        });
+
+        zE('webWidget', 'prefill', {
+            name: {
+                value: HelpCenter.user.name,
+                readOnly: true // optional
+            },
+            email: {
+                value: HelpCenter.user.email,
+                readOnly: true // optional
+            }
+        });
+
+        zE('webWidget:on', 'chat:start', function () {
+            zE(
+                'webWidget',
+                'chat:send',
+                `Olá, ${HelpCenter.user.name}, sua filial é a ${HelpCenter.user.organizations.map(function (item) {
+                    return item.name;
+                })}.Obrigado por reportar!
+            Estamos verificando sua solicitação.`
+            );
+        });
+
+        zE('webWidget:on', 'chat:end', function () {
+            zE('webWidget', 'chat:reauthenticate');
+            window.history.forward(1);
+            window.location.reload();
+            sessionStorage.clear();
+            localStorage.clear();
+        });
+
+        window.zESettings = {
+            cookies: false,
+            webWidget: {
+                launcher: {
+                    mobile: {
+                        labelVisible: true
+                    }
+                }
+            }
+        };
+    });
+</script>
+
+
+<!-- SCRIPT CHAT -->
+<script type="text/javascript">
+    $(document).ready(function () {
+        var waitForEl = function (selector, callback, maxTimes = false) {
+            if ($(selector).length) {
+                const sel = $(selector);
+                callback(sel);
+            } else {
+                if (maxTimes === false || maxTimes > 0) {
+                    (maxTimes != false) && maxTimes--;
+                    setTimeout(function () {
+                        waitForEl(selector, callback, maxTimes);
+                    }, 100);
+                }
+            }
+        };
+        const buttonElem = 'iframe[style*="overflow: visible; opacity: 1"]';
+        const styleButtonElem = "width: 1px; height: 1px; padding: 0px; margin: 10px 20px; position: fixed; bottom: 0px; overflow: visible; opacity: 0; border: 0px; z-index: 999998; transition-duration: 250ms; transition-timing-function: cubic-bezier(0.645, 0.045, 0.355, 1); transition-property: opacity, top, bottom; right: 0px;";
+        waitForEl(buttonElem, function (elem) {
+            elem[0].style = styleButtonElem;
+        });
+        const dfMessenger = document.querySelector('df-messenger');
+        function hasNull(target) {
+            for (var member in target) {
+                if (target[member] == "")
+                    return true;
+            }
+            return false;
+        }
+
+        const titlesCaixaMovel = {
+            name: "Nome: ",
+            email: "Email: ",
+            login: "Login: ",
+            phone: "Telefone: ",
+            ticket_open: "Ticket Aberto: ",
+            payment: "Forma de Pagamento: ",
+            card_number: "Número do Cartão: ",
+            printer_name: "Impressora: ",
+            authorized_brand: "Marca do Pinpad: ",
+            error: "Erro: ",
+            order_id: "Pedido: ",
+            card_flag: "Bandeira do cartão: ",
+            printer: "Impressora não aparece: ",
+            assunto: "Assunto: ",
+            id_collaborator: "Id colaborador afetado: ",
+            message: "Mensagem: ",
+            cpf: "Cpf do cliente: ",
+            cnpj: "Cnpj do cliente: ",
+            num_pdv: "Número do PDV: ",
+            device_model: "Modelo do aparelho: ",
+            device_imei: "IMEI do aparelho: ",
+            app_version: "Versão do App:",
+            operation_date: "Data da operação: ",
+            operation_value: "Valor: ",
+            network_name: "Nome da rede: ",
+            qtd_device: "Quantidade de dispositivos: ",
+            store_error: "Em toda a loja: ",
+            exchange_num: "Número da troca: ",
+            return_num: "Número da devolução: ",
+            cpf_cnpj: "Cpf ou Cnpj: ",
+            operator_name: "Operadora: ",
+            redemption_reversal: "Resgate / Estorno: ",
+            receiving_category: "Tipo de Recebimento: ",
+            lock: "Travamento: ",
+            undoing: "Desfazimento: ",
+            multiple_payment: "Forma de Pagamento: ",
+        };
+
+        const customEntitiesValues = {
+            "authorized_brand": {
+                "mobile_vendas_marca_mobile_pinpad_cielo": "Cielo",
+                "mobile_vendas_marca_mobile_pinpad_getnet": "Getnet",
+                "mobile_vendas_marca_mobile_pinpad_redecard": "Redecard"
+            },
+            "redemption_reversal": {
+                "transacao_resgate": "Resgate",
+                "transacao_estorno": "Estorno"
+            },
+            "receiving_category": {
+                "transacao_recebimento__consórcio": "Consórcio",
+                "transacao_recebimento__boleto/correspondente_bancário": "Correspondente Bancário",
+                "transacao_recebimento__crediário": "Crediário",
+                "transacao_recebimento": "Luiza Cred"
+            },
+            "operator_name": {
+                "algar_ctbc_": "Algar(CTBC)",
+                "brasil_telecom": "Brasil Telecom",
+                "claro": "Claro",
+                "oi": "Oi",
+                "telemig": "Telemig",
+                "tim": "Tim",
+                "vivo": "Vivo",
+            },
+            "lock": {
+                "travamento_erro_desconhecido": "Erro Desconhecido"
+            },
+            "undoing": {
+                "vendas_desfazimento_não": "Não"
+            },
+            "multiple_payment": {
+                "transacao_multiplos_pagamentos_débito": "Débito",
+                "transacao_multiplos_pagamentos_dinheiro": "Dinheiro",
+                "transacao_multiplos_pagamentos_crédito": "Crédito",
+            },
+            "card_flag": {
+                "transacao_multiplas_bandeiras_visa": "Visa",
+                "transacao_multiplas_bandeiras_master": "Master",
+                "transacao_multiplas_bandeiras_elo": "Elo",
+                "transacao_multiplas_bandeiras_hipercard": "Hipercard",
+                "transacao_multiplas_bandeiras_magazine_luiza": "Magazine Luiza",
+                "transacao_multiplas_bandeiras_credshop": "Credshop",
+                "transacao_multiplas_bandeiras_banrisul": "Banrisul",
+                "transacao_multiplas_bandeiras_banese": "Banese",
+                "transacao_multiplas_bandeiras_banricompras": "Banricompras",
+                "transacao_multiplas_bandeiras_amex": "Amex",
+                "transacao_multiplas_bandeiras_sodexo": "Sodexo",
+                "magalu_card_": "Magalu Card ",
+            }
+        }
+
+        const paramsToIgnore = [
+            'balance_value'
+        ]
+
+        const getTextOnlineService = (parameters) => {
+            let index = 0;
+            let text = "";
+            for (var param in parameters) {
+                if (paramsToIgnore.includes(param)) {
+                    continue
+                }
+
+                let value_param = parameters[param];
+
+                if (param == "card_number") {
+                    value_param = value_param.toString().replace(/ /g, '');
+                    value_param = value_param.substring(0, 6) + "******" + value_param.substring(value_param.length - 4, value_param.length);
+                }
+                if (param == "operation_value") {
+                    value_param = parseFloat(value_param.toString()).toFixed(2)
+                }
+                if (param == "operation_date") {
+                    value_param = new Date(value_param).toLocaleDateString("pt-BR")
+                }
+
+                if (param in customEntitiesValues && value_param in customEntitiesValues[param]) {
+                    text = text + titlesCaixaMovel[param] + customEntitiesValues[param][value_param] + "\n";
+                }
+                else {
+                    text = text + titlesCaixaMovel[param] + value_param + "\n";
+                }
+                index++;
+            }
+            return text;
+        }
+        dfMessenger.addEventListener('df-response-received', function (event) {
+            $zopim(function () {
+                $zopim.livechat.setOnStatus(checkStatus);
+            });
+
+            const intentsOnlineService = ["atendimento_apontamento_eletronico_rb_form", "atendimento_apontamento_eletronico_rvirtual", "atendimento_apontamento_eletronico_venda", "atendimento_apontamento_eletronico_intermitente", "atendimento_vendas_mobile_pedidov", "atendimento_vendas_mobile_cartaolu", "atendimento_vendas_mobile_cdc_digital", "atendimento_filial_sem_sistema_gemco", "atendimento_filial_sem_sistema_internet_lentidao", "atendimento_filial_sem_sistema_internet_sem_comunicacao", "atendimento_filial_sem_sistema_rede_wifi_aparelhos_mobile", "atendimento_filial_sem_sistema_rede_wifi_indisponivel", "atendimento_filial_sem_sistema_rede_wifi_aparelhos_nao_mobile", "resposta_formas_pagamento", "atendimento_vendas_multimidia_carregarpg_form", "atendimento_vendas_pdv_abertura", "atendimento_vendas_pdv_fechamento", "atendimento_vendas_pdv_transacao_recebimento_debito", "atendimento_vendas_pdv_transacao_recebimento_dinheiro", "atendimento_vendas_pdv_transacao_venda_credito_debito", "atendimento_vendas_pdv_transacao_venda_outros_meios", "atendimento_apontamento_eletronico_antares", "atendimento_apontamento_eletronico_venda_app_web", "atendimento_vendas_mobile_pedido_venda_caixa_movel", "atendimento_vendas_mobile_pedido_venda_pedido_venda", "atendimento_vendas_mobile_pedido_venda_venda_remota_perfil", "atendimento_vendas_mobile_pedido_venda_venda_remota_venda", "atendimento_vendas_mobile_antifralde", "atendimento_vendas_pdv_transacao_saida_emprestimo", "atendimento_vendas_pdv_fita_detalhe_contingencia", "atendimento_vendas_pdv_transacao_recarga", "atendimento_vendas_pdv_transacao_sangria_suprimento", "atendimento_vendas_pdv_transacao_travamento", "atendimento_vendas_multimidia", "atendimento_ml_admin_troca_form", "atendimento_ml_admin_devolucao_form"];
+
+            if (intentsOnlineService.includes(event.detail.response.queryResult.intent.displayName)) {
+                if (event.detail.response.queryResult.parameters && !hasNull(event.detail.response.queryResult.parameters)) {
+                    if (!HelpCenter.user.email) {
+                        dfMessenger.renderCustomText('Você precisa estar logado para realizar essa solicitação!');
+                        return;
+                    }
+                    event.detail.response.queryResult.parameters.name = HelpCenter.user.name;
+                    event.detail.response.queryResult.parameters.email = HelpCenter.user.email;
+                    event.detail.response.queryResult.parameters.login = HelpCenter.user.email.split("@")[0];
+                    delete event.detail.response.queryResult.parameters.category;
+                    delete event.detail.response.queryResult.parameters.subcategory;
+                    delete event.detail.response.queryResult.parameters.subcategory2;
+                    const text = getTextOnlineService(event.detail.response.queryResult.parameters);
+                    $zopim(function () {
+                        $zopim.livechat.setName(`${HelpCenter.user.name}`);
+                        $zopim.livechat.setEmail(`${HelpCenter.user.email}`);
+                        $zopim.livechat.addTags("zopim", "livechatAPI", event.detail.response.queryResult.parameters.assunto.split("-")[0]);
+                        $zopim.livechat.say(text);
+                        document.querySelector("df-messenger").shadowRoot.querySelector(".df-messenger-wrapper button").click();
+                        $zopim.livechat.window.show();
+                    });
+                }
+            }
+            if (event.detail.response.queryResult.intent.displayName == "abrir_chamado_sim") {
+                if (!HelpCenter.user.email) {
+                    dfMessenger.renderCustomText('Você precisa estar logado para realizar essa solicitação!');
+                    return;
+                }
+                $zopim(function () {
+                    $zopim.livechat.setName(`${HelpCenter.user.name}`);
+                    $zopim.livechat.setEmail(`${HelpCenter.user.email}`);
+                    $zopim.livechat.addTags("zopim", "livechatAPI");
+                    document.querySelector("df-messenger").shadowRoot.querySelector(".df-messenger-wrapper button").click();
+                    $zopim.livechat.window.show();
+                });
+            }
+        });
+        let statusCon = "offline";
+        const checkStatus = (status) => {
+            statusCon = status;
+        }
+
+        const changeQuery = (data) => {
+            data = JSON.parse(data);
+            if (data.queryInput && data.queryInput.event && data.queryInput.event.name === "atendimentoOnline") {
+                if (statusCon === "offline") {
+                    delete data.queryInput.event;
+                    data.queryInput = { "text": { "text": "chamado offline", "languageCode": "pt-br" } }
+                }
+            }
+            return JSON.stringify(data);
+        }
+
+        (function (send) {
+            var orgSend = window.XMLHttpRequest.prototype.send;
+            XMLHttpRequest.prototype.send = function (data) {
+                if (data && !(data instanceof FormData)) {
+                    data = changeQuery(data);
+                }
+                send.call(this, data);
+            }
+        })(XMLHttpRequest.prototype.send);
+
+        // YOUR CODE (NOT RELATED TO DIALOGFLOW MESSENGER)
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+        }
+
+        function replaceAll(str, find, replace) {
+            return str.replace(new RegExp(find, 'g'), replace);
+        }
+
+        window.addEventListener('df-messenger-loaded', function (event) {
+            document.querySelector("df-messenger").setAttribute("user-id", HelpCenter.user.email);
+            document.querySelector("df-messenger").shadowRoot.querySelector(".df-messenger-wrapper").querySelector("df-messenger-chat").shadowRoot.querySelector("df-messenger-user-input").shadowRoot.querySelector("input").placeholder = "Pergunte algo...";
+        });
+    });
+</script>

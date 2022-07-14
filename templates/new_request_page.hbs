@@ -1,0 +1,54 @@
+<div class="container-divider"></div>
+<div class="container">
+  <nav class="sub-nav">
+    {{breadcrumbs}}
+    <div class="search-container">
+      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" focusable="false" viewBox="0 0 12 12" class="search-icon">
+        <circle cx="4.5" cy="4.5" r="4" fill="none" stroke="currentColor"/>
+        <path stroke="currentColor" stroke-linecap="round" d="M11 11L7.5 7.5"/>
+      </svg>
+      {{search submit=false}}
+    </div>
+  </nav>
+
+  <h1>
+    {{t 'submit_a_request'}}
+    <span class="follow-up-hint">
+      {{follow_up}}
+    </span>
+  </h1>
+
+  <div id="main-content" class="form">
+    {{request_form wysiwyg=true}}
+  </div>
+</div>
+
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script>
+  //Campo a ser *substuído* - PPF - Área
+  let forms = $('#request_custom_fields_1900007346065').attr("data-tagger");
+  forms = forms != null ? JSON.parse($('#request_custom_fields_1900007346065').attr("data-tagger")) : '';
+  
+  
+  
+  $(document).ready(function () {
+    let select = '<select class="js-example-basic-single" name="state">';
+  	
+		for(let i = 0; i < forms.length; i++) {
+      select += '<option value="'+forms[i]["value"]+'">'+forms[i]["label"]+'</option>';
+    }	
+  	select +=  '</select>';
+    
+    $('#new_request > div.form-field.string.optional.request_custom_fields_1900007346065').append(select);
+  	$('#new_request > div.form-field.string.optional.request_custom_fields_1900007346065 > a').addClass('d-none');
+  	
+  	$('.js-example-basic-single').select2().on('select2:select', function (e) {
+      var data = e.params.data;
+      console.log(data.id);
+			$('#request_custom_fields_1900007346065').val(data.id);
+  });
+  	$(".js-example-basic-single").addClass('form-control');
+  });
+       
+</script>
